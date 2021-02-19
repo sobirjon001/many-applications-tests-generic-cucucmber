@@ -14,6 +14,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.Map;
+
 public class SmartBear_OrderProcess_ScenarioOutline_StepDefinitions implements BrowserUtils {
 
   private Login_Page login_page = new Login_Page();
@@ -25,7 +27,7 @@ public class SmartBear_OrderProcess_ScenarioOutline_StepDefinitions implements B
             ConfigurationReader.getProperty("smartBear_URL")
     );
     login_page.inputUserName.sendKeys(userName);
-    login_page.getInputPassword.sendKeys(password);
+    login_page.inputPassword.sendKeys(password);
     sleep(1);
     login_page.buttonLogin.click();
   }
@@ -85,7 +87,7 @@ public class SmartBear_OrderProcess_ScenarioOutline_StepDefinitions implements B
     lending_page.buttonProcess.click();
     sleep(1);
   }
-  @When("User is View All Orders page")
+  @When("User is in View All Orders page")
   public void user_is_view_all_orders_page() {
     lending_page.viewAllOrdersLink.click();
   }
@@ -96,5 +98,34 @@ public class SmartBear_OrderProcess_ScenarioOutline_StepDefinitions implements B
     )).getText();
 
     Assert.assertEquals(expectedCustomerName, actualCustomerName);
+  }
+
+  @Given("user is already logged in to SmartBear")
+  public void user_is_already_logged_in_to_smart_bear() {
+    login_page.loginToSmartBear_Config();
+  }
+  @Then("user enters address information")
+  public void user_enters_address_information(Map<String, String> dataTable) {
+    String customerName = dataTable.get("customerName");
+    String street = dataTable.get("street");
+    String city = dataTable.get("city");
+    String state = dataTable.get("state");
+    String zip = dataTable.get("zip");
+    lending_page.inputCustomerName.sendKeys(customerName);
+    lending_page.inputStreet.sendKeys(street);
+    lending_page.inputCity.sendKeys(city);
+    lending_page.inputState.sendKeys(state);
+    lending_page.inputZip.sendKeys(zip);
+  }
+  @Then("user enters payment information")
+  public void user_enters_payment_information(Map<String, String> dataTable) {
+    String cardType = dataTable.get("cardType");
+    String cardNumber = dataTable.get("cardNumber");
+    String expirationDate = dataTable.get("expirationDate");
+    lending_page.tableRadioBoxesVisaTypes.findElement(By.xpath(
+            ".//label[.='" + cardType + "']/../input"
+    )).click();
+    lending_page.inputCardNumber.sendKeys(cardNumber);
+    lending_page.inputExpDate.sendKeys(expirationDate);
   }
 }

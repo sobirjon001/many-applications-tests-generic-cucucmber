@@ -1,8 +1,9 @@
+@smartBear @all
 Feature: SCENARIO OUTLINES PRACTICE
   TC#27: SmartBear order process
 
-  @outlines @all @smartBear
-  Scenario Outline: SmartBearorder process
+  @outlines
+  Scenario Outline: Smart Bear order process
     Given User is logged into SmartBear Tester account as "Tester" with "test" password
     And User is on Order page
     When User selects "<product>" from product dropdown
@@ -16,7 +17,7 @@ Feature: SCENARIO OUTLINES PRACTICE
     And User enters "<card number>" to card number
     And User enters "<expiration date>" to expiration date
     And User clicks process button
-    And User is View All Orders page
+    And User is in View All Orders page
     Then User verifies "<expected name>" is in the list
     Examples:
       | product     | quantity | customer name      | street      | city        | state | zip   | card type        | card number   | expiration date | expected name      |
@@ -28,3 +29,23 @@ Feature: SCENARIO OUTLINES PRACTICE
       | ScreenSaver | 10       | Monica Geller      | Euclid st   | Arl Hgths   | IL    | 60312 | MasterCard       | 4572872834927 | 11/22           | Monica Geller      |
       | MyMoney     | 3        | Ross Geller        | River st    | Des Plaines | IL    | 60666 | American Express | 5849822374383 | 12/22           | Ross Geller        |
       | MyMoney     | 1        | Ken Adams          | Kinzie st   | Chicago     | IL    | 60312 | MasterCard       | 1333313133315 | 12/22           | Ken Adams          |
+
+
+  @dataTale
+  Scenario: Purchase scenario
+    Given user is already logged in to SmartBear
+    And User is on Order page
+    Then User enters "2" to quantity
+    And user enters address information
+      | customerName | Jamal          |
+      | street       | 123 london ave |
+      | city         | london         |
+      | state        | center         |
+      | zip          | 34411          |
+    And user enters payment information
+      | cardType       | Visa             |
+      | cardNumber     | 3333444422221111 |
+      | expirationDate | 12/24            |
+    When User clicks process button
+    And User is in View All Orders page
+    Then User verifies "Jamal" is in the list
